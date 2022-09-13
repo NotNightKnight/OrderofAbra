@@ -1,0 +1,14 @@
+if(myPController.checkWallFront)
+                {
+                    Vector2 jumpVector = new Vector2(-directionalJumpSpeed, jumpSpeed);
+                    myPController.myRigidbody2D.velocity = jumpVector;
+
+                    myPController.myAnimator.SetTrigger("wallJump");
+                }
+                else if(myPController.checkWallBack)
+                {
+                    Vector2 jumpVector = new Vector2(directionalJumpSpeed, jumpSpeed);
+                    myPController.myRigidbody2D.velocity = jumpVector;
+
+                    myPController.myAnimator.SetTrigger("wallJump");
+                }

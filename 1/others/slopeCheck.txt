@@ -1,0 +1,59 @@
+//VARIABLES
+    public Vector2 midBottomPosition
+    { get; set; }
+
+    PController myPController
+    { get; set; }
+    
+    private void Awake()
+    {
+        myPController = GetComponent<PController>();
+    }
+
+    private void FixedUpdate()
+    {
+        CheckGround();
+        SlopeCheck();
+    }
+
+    void CheckGround()
+    {
+        myPController.groundCheck = Physics2D.OverlapCircle(midBottomPosition, myPController.groundCheckDistance, myPController.groundLayerMask);
+        //Debug.Log(myPController.groundCheck.ToString());
+    }
+
+    void SlopeCheck()
+    {
+        midBottomPosition = transform.position - new Vector3(0f, myPController.myCircleCollider2D.radius / 2);
+
+        SlopeCheckHorizontal(midBottomPosition);
+    }
+
+    void SlopeCheckHorizontal(Vector2 checkPos)
+    {
+        RaycastHit2D slopeRayFront = Physics2D.Raycast(checkPos, transform.right, myPController.slopeCheckDistance, myPController.groundLayerMask);
+        RaycastHit2D slopeRayBack = Physics2D.Raycast(checkPos, -transform.right, myPController.slopeCheckDistance, myPController.groundLayerMask);
+
+        if(myPController.groundCheck)
+        {
+            if (slopeRayFront)
+            {
+                myPController.slopeCheck = true;
+            }
+            else if (slopeRayBack)
+            {
+                myPController.slopeCheck = true;
+            }
+            else
+            {
+                myPController.slopeCheck = false;
+            }
+        }
+        else
+        {
+            myPController.slopeCheck = false;
+        }
+
+        //Debug.DrawRay(slopeRayFront.point, slopeRayFront.normal, Color.red);
+        //Debug.DrawRay(slopeRayBack.point, slopeRayBack.normal, Color.black);
+        //Debug.Log(myPController.slopeCheck.ToString());
